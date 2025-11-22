@@ -1,0 +1,23 @@
+---
+- name: Desactivar swap (requerido por Kubernetes)
+  command: swapoff -a
+  when: ansible_swaptotal_mb | default(0) > 0
+
+- name: Quitar swap de fstab
+  replace:
+    path: /etc/fstab
+    regexp: '(^.*\sswap\s.*$)'
+    replace: '# \1'
+
+- name: Actualizar apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Instalar paquetes basicos
+  apt:
+    name:
+      - curl
+      - apt-transport-https
+      - ca-certificates
+    state: present

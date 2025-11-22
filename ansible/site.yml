@@ -1,0 +1,18 @@
+---
+- name: Configuracion base en todos los nodos
+  hosts: master,workers
+  become: true
+  roles:
+    - common
+
+- name: Instalar K3s en el master
+  hosts: master
+  become: true
+  roles:
+    - k3s-master
+
+- name: Unir workers al cluster K3s
+  hosts: workers
+  become: true
+  roles:
+    - k3s-worker
