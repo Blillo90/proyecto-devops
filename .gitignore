@@ -1,0 +1,25 @@
+# ===== ARCHIVOS DE CONFIGURACIÓN PRIVADOS =====
+.env
+
+# ===== ENTORNOS VIRTUALES =====
+.venv/
+env/
+venv/
+
+# ===== PYTHON CACHE =====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ===== EDITOR / IDE =====
+.vscode/
+.idea/
+
+# ===== ARCHIVOS TEMPORALES =====
+*.log
+*.tmp
+
+# ===== ARCHIVOS DEL SISTEMA =====
+.DS_Store
+Thumbs.db
