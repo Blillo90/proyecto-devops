@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tickets-api-ingress
+  namespace: tickets-app
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+    - host: tickets.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tickets-api   # tiene que coincidir con el Service
+                port:
+                  number: 80        # puerto del Service, no el 8000 del contenedor
