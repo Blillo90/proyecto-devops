@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-api
+  namespace: tickets-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tickets-api
+  template:
+    metadata:
+      labels:
+        app: tickets-api
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: k8s-master   # que solo corra en el master
+      containers:
+        - name: tickets-api
+          image: tickets-api:v1              # imagen local
+          imagePullPolicy: Never             # NO ir a Docker Hub
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_USER
+              value: devuser
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: tickets_db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets-api
+  namespace: tickets-app
+spec:
+  selector:
+    app: tickets-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+  type: ClusterIP
